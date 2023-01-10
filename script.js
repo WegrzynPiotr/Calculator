@@ -1,13 +1,15 @@
-import { switchTheme } from "/theme.js"
-import { historyAdd, box } from "./history.js"
-const keyboard = document.querySelectorAll("#keyboard >*")
-const mathOperations = document.getElementById("values")
-const result = document.getElementById("result")
-const equal = document.getElementById("equal")
-const plusMinusBtn = document.getElementById("plus_minus")
-let dotsList = []
-const numbers = document.querySelectorAll(".number")
-const functions = document.querySelectorAll(".function")
+import "core-js/core";
+import "regenerator-runtime/runtime";
+import { switchTheme } from "/theme.js";
+import { historyAdd, box } from "./history.js";
+const keyboard = document.querySelectorAll("#keyboard >*");
+const mathOperations = document.getElementById("values");
+const result = document.getElementById("result");
+const equal = document.getElementById("equal");
+const plusMinusBtn = document.getElementById("plus_minus");
+let dotsList = [];
+const numbers = document.querySelectorAll(".number");
+const functions = document.querySelectorAll(".function");
 let values = []
 let res;
 let pos;
@@ -184,8 +186,6 @@ function signCurrentValue(e) {
 function dotAdd() {
     mathOperations.textContent += "."
 }
-
-
 
 function checkResult() {
 

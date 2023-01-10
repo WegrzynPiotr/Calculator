@@ -1,3 +1,5 @@
+import "core-js/core";
+import "regenerator-runtime/runtime";
 const circle = document.querySelector(".circle");
 const switchBtn = document.getElementById("mode");
 const keyboard = document.getElementById("keyboard");

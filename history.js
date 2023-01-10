@@ -1,3 +1,5 @@
+import "core-js/core";
+import "regenerator-runtime/runtime";
 let historyBox
 export let box
 let container
