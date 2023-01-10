@@ -36,7 +36,6 @@ function operation(symbol, curVal) {
         }
     }
     )
-    // result.textContent = final
     if (isNaN(final) || !isFinite(final)) {
         final = "error"
         setTimeout(clear, 2000)
@@ -80,14 +79,10 @@ function operators(curVal) {
 
 
 
-function currentlyOperation() {
+function currentlyOperation(e) {
     if (currentOperation) return
+    currentOperation = this.textContent || e
 
-    // if (pos.length > 1) {
-    //     checkResult()
-    //     console.log("2 elementy")
-    // }
-    currentOperation = this.textContent
 
     if (currentOperation !== "AC") {
         mathOperations.textContent += currentOperation
@@ -103,7 +98,6 @@ function currentlyOperation() {
         mathOperations.textContent = ""
         pos = []
     }
-
 }
 
 
@@ -115,17 +109,12 @@ function plusMinusToggle() {
     if (pos[0] && !pos[1]) {
         pos[0] = Number(-pos[0])
         mathOperations.textContent = mathOperations.textContent.indexOf(currentOperation) > -1 ? pos[0] + currentOperation : pos[0]
-        // console.log("moment")
     }
 
     if (pos[1]) {
         pos[1] = Number(-pos[1])
-        // mathOperations.textContent = pos[0] + currentOperation + "(" + pos[1] + ")"
     }
-    // if (mathOperations.textContent.indexOf(currentOperation) > -1 && pos[0] && !pos[1]) {
-    //     mathOperations.textContent = `(${pos[0]})${currentOperation}`
 
-    // }
 
     if (mathOperations.textContent.indexOf(currentOperation) > -1 && pos[0] && pos[1]) {
         mathOperations.textContent = `${pos[0]}${currentOperation}${pos[1] < 0 ? "(" + pos[1] + ")" : pos[1]}`
@@ -134,13 +123,11 @@ function plusMinusToggle() {
 
 }
 
-
 const numberKeys = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-
+const operationKeys = ["+", "-", "*", "/", "%"]
 
 
 function signCurrentValue(e) {
-
     mathOperations.textContent += this.textContent || numberKeys.filter(key => key == e.key)
     if (e.key == "Backspace" && result.textContent.length && !mathOperations.textContent.length) {
         clear()
@@ -152,12 +139,20 @@ function signCurrentValue(e) {
         return
     }
 
+    if (e.key == "Enter") {
+        checkResult()
+        return;
+    }
+
+    if (operationKeys.includes(e.key)) {
+        currentlyOperation(e.key)
+        return;
+    }
 
     if (!mathOperations.textContent.includes(currentOperation)) {
         currentOperation = ""
     }
 
-    console.log(pos)
     a = mathOperations.textContent
     pos = [...a.split(currentOperation)]
 
@@ -170,24 +165,20 @@ function signCurrentValue(e) {
         dot.addEventListener("click", dotAdd, { once: true })
         dotAdded = false;
     }
-    if (pos[0].includes(".")) {
-        dotAdded = false;
-    } else if (pos[1]) {
-        if (pos[1].includes("."))
-            dotAdded = true;
+    if (pos[0])
+        if (pos[0].includes(".")) {
+            dotAdded = false;
+        } else if (pos[1]) {
+            if (pos[1].includes("."))
+                dotAdded = true;
 
-    }
+        }
     if (dotAdded) {
         dot.removeEventListener("click", dotAdd)
         dotAdded = false
     }
 
-    // if (!pos.every(el => el.includes("-")))
 
-    // if (mathOperations.textContent == currentOperation) {
-    //     mathOperations.textContent = ""
-    //     pos = []
-    // }
 }
 
 function dotAdd() {
@@ -196,26 +187,17 @@ function dotAdd() {
 
 
 
-
-
 function checkResult() {
-    // if (pos[0].includes(".")) {
-    // dot.removeEventListener('click', dotAdd)
-    // }
 
     if (mathOperations.textContent.includes(currentOperation)) {
         let curVal = pos.map(el => parseFloat(el))
         operators(curVal)
         currentOperation = ""
-        //Funkcja zerowania po kazdym wyniku (teraz wlaczona, aby wylaczyc zakomentowac 2 nastepne linie nizej)
-        // mathOperations.textContent = ""
-        // pos = []
     }
 }
 
 
 function clear() {
-    // if (mathOperations.textContent == currentOperation) {
     mathOperations.textContent = ""
     currentOperation = ""
     result.textContent = ""
@@ -223,7 +205,6 @@ function clear() {
     pos[1] = null
     line.remove()
 }
-// keyboard.forEach(key => key.addEventListener("click", clear))
 
 numbers.forEach(number => number.addEventListener("click", signCurrentValue))
 equal.addEventListener("click", checkResult)
