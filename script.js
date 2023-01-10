@@ -1,5 +1,5 @@
-import "core-js/core";
 import "regenerator-runtime/runtime";
+import "core-js/index";
 import { switchTheme } from "/theme.js";
 import { historyAdd, box } from "./history.js";
 const keyboard = document.querySelectorAll("#keyboard >*");
